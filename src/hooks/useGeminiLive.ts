@@ -262,15 +262,12 @@ export const useGeminiLive = ({
   }, [voiceVolume]);
 
   const connect = useCallback(async () => {
-    if (apiClient.isBrowser) {
-      console.warn('[NOVA-SAFE] Gemini Live connection disabled in browser environment.');
-      return;
-    }
+    // BROWSER-SAFE: Gemini Live uses WebSocket which works in browser
     try {
       setStatus(ConnectionStatus.CONNECTING);
       setError(null);
 
-      // Get API Key securely
+      // Get API Key securely (works in browser via localStorage fallback)
       const apiKey = await apiClient.invoke('get-gemini-token');
       if (!apiKey) {
         throw new Error('Could not retrieve API Key');
