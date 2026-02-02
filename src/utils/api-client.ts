@@ -4,12 +4,16 @@
  * to ensure the app works in both environments.
  */
 
-const isElectron = typeof window !== 'undefined' &&
-    (!!(window as any).electronAPI || import.meta.env.VITE_IS_DESKTOP === 'true');
+const isElectron =
+    typeof window !== 'undefined' &&
+    !!(window as any).electronAPI;
 
-const electronAPI = typeof window !== 'undefined' ? (window as any).electronAPI : null;
+const isBrowser = !isElectron;
 
-const isBrowser = typeof window !== 'undefined' && !isElectron;
+const electronAPI =
+    typeof window !== 'undefined'
+        ? (window as any).electronAPI
+        : null;
 
 // Helper to simulate delay like IPC
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -120,7 +124,7 @@ export const apiClient = {
     isElectron,
     isBrowser,
     invoke: async (channel: string, data?: any) => {
-        if (isElectron) {
+        if (isElectron && electronAPI) {
             return await electronAPI.invoke(channel, data);
         } else {
             await delay(50); // Simulate network/ipc delay
@@ -128,7 +132,7 @@ export const apiClient = {
         }
     },
     on: (channel: string, callback: Function) => {
-        if (isElectron) {
+        if (isElectron && electronAPI) {
             return electronAPI.on(channel, callback);
         } else {
             return webAPI.on(channel, callback);

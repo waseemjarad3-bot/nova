@@ -51,12 +51,12 @@ export const useZoom = () => {
       if (isControl) {
         if (e.key === '=' || e.key === '+') {
           e.preventDefault();
-          const current = (window as any).electronAPI?.getZoomFactor();
-          if (current !== undefined) (window as any).electronAPI?.setZoomFactor(Math.min(current + 0.1, 2.5));
+          const current = electronAPI?.getZoomFactor();
+          if (current !== undefined) electronAPI?.setZoomFactor(Math.min(current + 0.1, 2.5));
         } else if (e.key === '-' || e.key === '_') {
           e.preventDefault();
-          const current = (window as any).electronAPI?.getZoomFactor();
-          if (current !== undefined) (window as any).electronAPI?.setZoomFactor(Math.max(current - 0.1, 0.4));
+          const current = electronAPI?.getZoomFactor();
+          if (current !== undefined) electronAPI?.setZoomFactor(Math.max(current - 0.1, 0.4));
         } else if (e.key === '0') {
           e.preventDefault();
           applyScaling();
