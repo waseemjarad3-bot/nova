@@ -22,10 +22,10 @@ const AssistantInfoModal: React.FC<AssistantInfoModalProps> = ({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4">
             <div className="absolute inset-0 bg-j-void/80 backdrop-blur-md animate-in fade-in duration-300" onClick={onClose} />
-            <div className="w-full max-w-lg bg-j-panel border border-j-magenta/30 rounded-[2.5rem] shadow-[0_0_50px_rgba(255,0,128,0.2)] overflow-hidden relative z-10 animate-in zoom-in-95 duration-300">
-                <div className="p-8 flex flex-col">
+            <div className="w-full max-w-lg max-h-[95vh] bg-j-panel border border-j-magenta/30 rounded-[1.5rem] sm:rounded-[2.5rem] shadow-[0_0_50px_rgba(255,0,128,0.2)] overflow-hidden relative z-10 animate-in zoom-in-95 duration-300 flex flex-col">
+                <div className="p-5 sm:p-8 flex flex-col overflow-y-auto no-scrollbar">
                     {/* Header */}
                     <div className="flex justify-between items-center mb-6">
                         <div className="flex items-center gap-3">

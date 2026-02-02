@@ -967,13 +967,13 @@ function App() {
           </div>
 
           <section className={`flex-1 flex flex-col min-w-0 relative bg-gradient-to-b from-j-void/50 to-j-void ${windowWidth < 1024 && mobileTab !== 'intelligence' ? 'hidden' : 'flex'}`}>
-            <div className={`flex-1 flex flex-col items-center p-4 lg:p-6 gap-4 sm:gap-10 relative overflow-y-auto overflow-x-hidden no-scrollbar`} ref={svgContainerRef}>
+            <div className={`flex-1 flex flex-col items-center p-4 lg:p-6 pb-40 lg:pb-10 gap-4 sm:gap-10 relative overflow-y-auto overflow-x-hidden no-scrollbar`} ref={svgContainerRef}>
 
               {activeTab === 'intelligence' ? (
                 <>
                   <SystemConnections paths={paths} windowWidth={windowWidth} />
 
-                  <div className="flex flex-col sm:flex-row items-center z-10 py-4 h-full gap-4 sm:gap-10 overflow-y-auto no-scrollbar sm:overflow-visible">
+                  <div className="flex flex-col sm:flex-row items-center z-10 py-4 h-auto sm:h-full gap-4 sm:gap-10 overflow-visible">
                     <FolderExplorer
                       importedFolders={importedFolders}
                       handleImportFolder={handleImportFolder}
@@ -1022,6 +1022,25 @@ function App() {
                     toggleMicMute={toggleMute}
                   />
 
+                  {activeTab === 'intelligence' && (
+                    <VisualHub
+                      isExpanded={isVisualHubExpanded}
+                      onToggleExpand={() => setIsVisualHubExpanded(!isVisualHubExpanded)}
+                      generatedImage={generatedImage}
+                      generatedDiagram={generatedDiagram}
+                      isVisualizing={isVisualizing}
+                      isDiagramRendering={isDiagramRendering}
+                      onReset={() => { setGeneratedImage(null); setGeneratedDiagram(null); }}
+                      zoom={zoom}
+                      setZoom={setZoom}
+                      pan={pan}
+                      setPan={setPan}
+                      isDragging={isDragging}
+                      setIsDragging={setIsDragging}
+                      dragStart={dragStart}
+                      setDragStart={setDragStart}
+                    />
+                  )}
                 </>
               ) : activeTab === 'notes' ? (
                 <div className="w-full h-full max-w-6xl z-10 overflow-hidden">
@@ -1040,26 +1059,6 @@ function App() {
                 </div>
               )}
             </div>
-
-            {activeTab === 'intelligence' && (
-              <VisualHub
-                isExpanded={isVisualHubExpanded}
-                onToggleExpand={() => setIsVisualHubExpanded(!isVisualHubExpanded)}
-                generatedImage={generatedImage}
-                generatedDiagram={generatedDiagram}
-                isVisualizing={isVisualizing}
-                isDiagramRendering={isDiagramRendering}
-                onReset={() => { setGeneratedImage(null); setGeneratedDiagram(null); }}
-                zoom={zoom}
-                setZoom={setZoom}
-                pan={pan}
-                setPan={setPan}
-                isDragging={isDragging}
-                setIsDragging={setIsDragging}
-                dragStart={dragStart}
-                setDragStart={setDragStart}
-              />
-            )}
           </section>
 
           {/* SidebarRight - only show on desktop (lg+) or when chat tab is active on mobile */}
