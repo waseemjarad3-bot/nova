@@ -83,10 +83,10 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onFinished, assistantName
 
             {/* Ambient Audio */}
             <audio ref={audioLoadingRef} loop>
-                <source src="audio/loading.wav" type="audio/wav" />
+                <source src="/audio/loading.wav" type="audio/wav" />
             </audio>
             <audio ref={audioFinishedRef}>
-                <source src="audio/access_granted.wav" type="audio/wav" />
+                <source src="/audio/access_granted.wav" type="audio/wav" />
             </audio>
 
 
@@ -100,7 +100,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onFinished, assistantName
                 {/* Header / Logo Text */}
                 <div className="mb-12 flex flex-col items-center group">
                     <img
-                        src="logo.jpg"
+                        src="/logo.jpg"
                         alt={`${assistantName} Logo`}
                         className="w-48 h-48 mb-6 object-contain rounded-2xl opacity-100 group-hover:scale-105 transition-all duration-700"
                     />
