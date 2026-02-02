@@ -950,7 +950,7 @@ function App() {
           {/* SidebarLeft - only show on desktop (lg+) or when dashboard tab is active on mobile */}
           <div className={`${windowWidth < 1024 && mobileTab !== 'dashboard' ? 'hidden' : 'block'} h-full shrink-0`}>
             <SidebarLeft
-              currentWidth={currentLeftWidth}
+              currentWidth={windowWidth < 1024 ? windowWidth : currentLeftWidth}
               isResizing={isResizingLeft}
               isCameraOn={isCameraOn}
               isCameraLoading={isCameraLoading}
@@ -1064,7 +1064,7 @@ function App() {
           {/* SidebarRight - only show on desktop (lg+) or when chat tab is active on mobile */}
           <div className={`${windowWidth < 1024 && mobileTab !== 'chat' ? 'hidden' : 'block'} h-full shrink-0`}>
             <SidebarRight
-              currentWidth={currentRightWidth}
+              currentWidth={windowWidth < 1024 ? windowWidth : currentRightWidth}
               isResizing={isResizingLeft || isResizingRight}
               rightPanelMode={rightPanelMode}
               setRightPanelMode={setRightPanelMode}

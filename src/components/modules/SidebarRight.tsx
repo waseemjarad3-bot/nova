@@ -69,9 +69,9 @@ const SidebarRight: React.FC<SidebarRightProps> = ({
 
             <aside
                 style={{
-                    width: (typeof window !== 'undefined' && window.innerWidth < 1280) ? '100%' : currentWidth,
-                    paddingLeft: currentWidth > 0 ? undefined : 0,
-                    paddingRight: currentWidth > 0 ? undefined : 0,
+                    width: (typeof window !== 'undefined' && window.innerWidth < 1024) ? '100%' : currentWidth,
+                    paddingLeft: (typeof window !== 'undefined' && window.innerWidth < 1024) ? '1rem' : (currentWidth > 0 ? undefined : 0),
+                    paddingRight: (typeof window !== 'undefined' && window.innerWidth < 1024) ? '1rem' : (currentWidth > 0 ? undefined : 0),
                     opacity: currentWidth > 0 ? 1 : 0
                 }}
                 className={`flex border-l border-white/10 p-0 xl:p-8 flex-col bg-j-panel/95 backdrop-blur-3xl ${isResizing ? '' : 'sidebar-transition'} overflow-hidden relative shadow-2xl sci-fi-grid`}
@@ -79,7 +79,7 @@ const SidebarRight: React.FC<SidebarRightProps> = ({
                 {/* Decorative Elements */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-j-cyan/5 blur-3xl rounded-full -mr-16 -mt-16 pointer-events-none"></div>
 
-                <div className="flex items-center justify-between mb-8 shrink-0 relative z-10">
+                <div className="flex items-center justify-between mb-4 sm:mb-8 shrink-0 relative z-10 px-2 sm:px-0 mt-4 sm:mt-0">
                     <div>
                         <h2 className="text-xs font-mono font-bold text-j-cyan tracking-[0.3em] uppercase">
                             {rightPanelMode === 'chat' ? 'System_Transcription' : 'Kernel_Logs'}
@@ -114,12 +114,12 @@ const SidebarRight: React.FC<SidebarRightProps> = ({
 
                 {/* Professional Deep Reasoning Toggle */}
                 {rightPanelMode === 'chat' && (
-                    <div className="flex items-center justify-between px-4 mb-6 py-2 border-y border-white/5 bg-white/[0.02] backdrop-blur-sm">
+                    <div className="flex items-center justify-between px-4 mb-4 sm:mb-6 py-2 border-y border-white/5 bg-white/[0.02] backdrop-blur-sm rounded-xl">
                         <div className="flex items-center gap-3">
                             <div className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${thinkingEnabled ? 'bg-j-cyan shadow-[0_0_10px_cyan]' : 'bg-gray-500/50'}`}></div>
                             <div className="flex flex-col">
-                                <span className={`text-[10px] font-mono font-bold tracking-widest uppercase transition-colors ${thinkingEnabled ? 'text-j-text-primary' : 'text-j-text-muted'}`}>Deep Reasoning</span>
-                                <span className="text-[9px] text-white/30 hidden sm:block">{thinkingEnabled ? 'Logic & Strategy Active' : 'Fast Response Mode'}</span>
+                                <span className={`text-[9px] sm:text-[10px] font-mono font-bold tracking-widest uppercase transition-colors ${thinkingEnabled ? 'text-j-text-primary' : 'text-j-text-muted'}`}>Deep Reasoning</span>
+                                <span className="text-[8px] sm:text-[9px] text-white/30">{thinkingEnabled ? 'Logic & Strategy Active' : 'Fast Response Mode'}</span>
                             </div>
                         </div>
 

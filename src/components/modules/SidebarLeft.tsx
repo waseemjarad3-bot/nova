@@ -45,7 +45,7 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
                     paddingRight: currentWidth > 0 ? undefined : 0,
                     opacity: currentWidth > 0 ? 1 : 0
                 }}
-                className={`flex border-r border-white/[0.03] flex-col p-0 lg:p-6 gap-6 shrink-0 bg-j-panel/90 backdrop-blur-3xl ${isResizing ? '' : 'sidebar-transition'} overflow-hidden relative shadow-2xl`}
+                className={`flex border-r border-white/[0.03] flex-col p-3 lg:p-6 gap-6 shrink-0 bg-j-panel/90 backdrop-blur-3xl ${isResizing ? '' : 'sidebar-transition'} overflow-hidden relative shadow-2xl mt-4 sm:mt-0`}
             >
                 {/* 1. Camera Panel */}
                 <div className="h-[320px] w-full rounded-3xl border border-white/[0.1] bg-j-surface/40 flex flex-col items-center justify-center relative overflow-hidden group shadow-lg">
