@@ -1,0 +1,88 @@
+
+PS C:\Users\USMAnpm run electron:build 
+
+> stonic_dsktp@1.0.5 electron:build
+> vite build && electron-builder
+
+vite v6.4.1 building for production...
+✓ 1732 modules transformed.
+dist/index.html                   0.92 kB │ gzip:   0.50 kB
+dist/assets/index-DZCBb95f.css   67.33 kB │ gzip:  11.17 kB
+dist/assets/index-rWeNi2PG.js   610.29 kB │ gzip: 152.80 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.72s
+  • electron-builder  version=25.1.8 os=10.0.22621
+  • loaded configuration  file=C:\Users\USMAN\Desktop\Stonic_dsktp\electron-builder.yml
+Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:364:14)
+    at C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:67:12
+Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:364:14)
+Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:364:14)
+Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:364:14)
+    at C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:67:12
+Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:364:14)
+    at C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:67:12
+Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:364:14)
+    at C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:67:12
+    at failPowershell (C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:156:7)
+    at VisualStudioFinder.parseData (C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:170:14)     
+    at C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:143:14
+    at ChildProcess.exithandler (node:child_process:410:7)
+    at ChildProcess.emit (node:events:508:28)
+    at maybeClose (node:internal/child_process:1101:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:305:5)
+
+
+  ⨯ node-gyp failed to rebuild 'C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\@jitsi\robotjs'  failedTask=build stackTrace=Error: node-gyp failed to rebuild 'C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\@jitsi\robotjs'
+    at ChildProcess.<anonymous> (C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\@electron\rebuild\lib\module-type\node-gyp\node-gyp.js:121:24)
+    at ChildProcess.emit (node:events:508:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:294:12)
+PS C:\Users\USMAN\Desktop\Stonic_dsktp> npm run electron:build
+
+> stonic_dsktp@1.0.5 electron:build
+> vite build && electron-builder
+
+vite v6.4.1 building for production...
+✓ 1732 modules transformed.
+dist/index.html                   0.92 kB │ gzip:   0.50 kB
+dist/assets/index-DZCBb95f.css   67.33 kB │ gzip:  11.17 kB
+dist/assets/index-rWeNi2PG.js   610.29 kB │ gzip: 152.80 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.74s
+  • electron-builder  version=25.1.8 os=10.0.22621
+  • loaded configuration  file=C:\Users\USMAN\Desktop\Stonic_dsktp\electron-builder.yml
+  • writing effective config  file=dist_electron\builder-effective-config.yaml
+  • executing @electron/rebuild  electronVersion=34.5.8 arch=x64 buildFromSource=false appDir=./
+  • installing native dependencies  arch=x64
+  • preparing       moduleName=@jitsi/robotjs arch=x64
+  ⨯ (node:2484) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:2484) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+Error: Could not find any Visual Studio installation to use
+    at VisualStudioFinder.fail (C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:122:47)
+    at C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:75:16
+    at VisualStudioFinder.findVisualStudio2013 (C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:380:14)
+    at C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:71:14
+    at VisualStudioFinder.findVisualStudio2015 (C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:364:14)
+    at C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:67:12
+    at failPowershell (C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:156:7)
+    at VisualStudioFinder.parseData (C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:170:14)     
+    at C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\node-gyp\lib\find-visualstudio.js:143:14
+    at ChildProcess.exithandler (node:child_process:410:7)
+    at ChildProcess.emit (node:events:508:28)
+    at maybeClose (node:internal/child_process:1101:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:305:5)
+
+
+  ⨯ node-gyp failed to rebuild 'C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\@jitsi\robotjs'  failedTask=build stackTrace=Error: node-gyp failed to rebuild 'C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\@jitsi\robotjs'
+    at ChildProcess.<anonymous> (C:\Users\USMAN\Desktop\Stonic_dsktp\node_modules\@electron\rebuild\lib\module-type\node-gyp\node-gyp.js:121:24)
+    at ChildProcess.emit (node:events:508:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:294:12)
+PS C:\Users\USMAN\Desktop\Stonic_dsktp> 

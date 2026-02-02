@@ -1,0 +1,49 @@
+
+**Strict Instruction:** Use ONLY the colors listed below. No external colors allowed.
+
+#### **🎨 1. The Core Identity (Primary Colors)**
+
+Yeh wo colors hain jo puri app ki 80% identity define karenge. User ko pehli nazar mein yahi dikhna chahiye.
+
+| Color Name | Hex Code | Visual Sample | Description |
+| --- | --- | --- | --- |
+| **Arc Reactor Cyan** | `#00F0FF` | 🟦 (Neon Cyan) | **Main Brand Color.** Use for primary borders, connecting lines, active buttons, and the main "glow." |
+| **Hologram White** | `#E0FFFF` | ⬜ (Pale Blue-White) | **Primary Text & Headers.** Yeh pure white nahi hai, isme slight cyan tint hai taake ye dark background pe aankhon ko chubhay nahi. |
+| **Deep Void** | `#050505` | ⬛ (Almost Black) | **Main App Background.** Pure black (`#000000`) use mat karna, ye slight off-black use karna taake depth feel ho. |
+
+#### **🖥️ 2. The Glass UI Elements (Secondary & Backgrounds)**
+
+Jarvis UI flat nahi hai, wo transparent "glass panels" par chalta hai.
+
+| Color Name | Hex Code | Visual Sample | Description |
+| --- | --- | --- | --- |
+| **Stark Teal** | `#003B46` | 🟦 (Dark Teal) | **Panel Backgrounds.** Is color ko hamesha **30% - 50% Opacity** ke sath use karna hai taake piche ka content blur hoke dikhay (Glassmorphism). |
+| **Midnight Blue** | `#001824` | 🔵 (Deep Blue) | **Inactive Areas / Shadows.** Use this for gradients inside the panels to create depth. |
+
+#### **📊 3. Data Visualization & Accents**
+
+Jab charts, graphs, ya specific data dikhana ho, tab ye colors use honge.
+
+| Color Name | Hex Code | Visual Sample | Description |
+| --- | --- | --- | --- |
+| **System Green** | `#8AFF00` | 🟩 (Neon Lime) | **Success / Stable Data.** Use for "System Online," battery full, or positive graphs. |
+| **Data Blue** | `#0078D7` | 🔵 (Mid-Tone Blue) | **Secondary Info.** Use for less important graphs or filling shapes inside the UI. |
+
+#### **⚠️ 4. Alerts & Notifications (Functional Colors)**
+
+Inko sirf tab use karna hai jab user ki attention chahiye ho.
+
+| Color Name | Hex Code | Visual Sample | Description |
+| --- | --- | --- | --- |
+| **Warning Amber** | `#FFAE00` | 🟧 (Golden Orange) | **Focus / Warning.** Use for pop-ups, critical notifications, or highlighting a specific target. |
+| **Critical Red** | `#D00000` | 🟥 (Deep Red) | **Error / Danger.** Use ONLY for delete buttons, errors, or system failure alerts. |
+
+---
+
+### **📝 Note for the Designer/Developer:**
+
+1. **Strict Adherence:** Please do **not** introduce any new colors outside of this list.
+2. **Glow Effect is Mandatory:** The Hex code `#00F0FF` (Cyan) is intended to be used with a CSS/Design `box-shadow` or "Outer Glow" effect to mimic light projection. It should rarely be flat.
+3. **Opacity Rule:** The color `#003B46` (Stark Teal) is strictly for **transparent backgrounds**. Never use it as a solid 100% block unless necessary for contrast.
+
+---

@@ -1,0 +1,181 @@
+### Key Points
+- Research suggests the Gemini-2.5-Flash-Native-Audio-Preview-12-2025 model, designed for real-time interactions via the Gemini Live API, primarily supports text, audio, and video inputs, with potential limitations on direct image and file processing in preview mode. It seems likely that images and PDFs are not natively handled as standalone inputs, leading to the observed issues where the model detects file names but misinterprets content.
+- Evidence leans toward using function calling to enable file reading tools, allowing the model to request and receive extracted content (e.g., text from PDFs or descriptions from images) without direct multimodal support. This approach can address wrong answers by formatting data as text responses from tools.
+- For audio files, the model excels with native PCM format, but for non-audio files like images or documents, implement tools to convert content into compatible text or audio streams where feasible.
+- Controversy exists around multimodal capabilities: Some documentation indicates image support in related Vertex AI variants, while developer previews emphasize audio/video/text, suggesting preview limitations may cause inconsistencies. Always test with official SDKs.
+
+### Supported Data Formats and Sending Methods
+To send data correctly, format inputs based on the model's real-time focus. Text is straightforward, audio requires raw PCM, and video uses streams. For unsupported types like images/PDFs, rely on tools.
+
+**Text Data**: Send as plain strings in client content turns. Example in Node.js:
+```javascript
+session.sendClientContent({
+  turns: [{role: "user", parts: [{text: "Analyze this data: ..."}]}],
+  turnComplete: true
+});
+```
+This is ideal for .txt file content extracted via tools.
+
+**Audio Data**: Use raw 16-bit little-endian PCM (any sample rate; API resamples to 16 kHz). Specify MIME type with rate (e.g., "audio/pcm;rate=16000"). Base64-encode if needed for transmission. Avoid other formats like MP3 unless converting.
+
+**Video Data**: Stream frames, but not for static images. If forcing images as single-frame video, it may work imperfectly due to preview constraints.
+
+**Images/PDFs/Documents**: Not directly supported in Live API previews. Use function calling to define a "read_file" tool that extracts and returns text/content.
+
+### Implementing File Reading Tools
+Define tools using OpenAPI-like schemas. The model calls them when needed, and your app executes to provide data. This resolves content misreading by supplying parsed data.
+
+Example Tool Definition (JavaScript for Electron/Node/React):
+```javascript
+const readFileTool = {
+  name: 'read_file',
+  description: 'Reads content from an attached file (images: describe; PDFs/txt: extract text).',
+  parameters: {
+    type: 'object',
+    properties: {
+      file_name: { type: 'string', description: 'Name or path of the file.' },
+      file_type: { type: 'string', enum: ['image', 'pdf', 'txt'], description: 'Type of file.' }
+    },
+    required: ['file_name', 'file_type']
+  }
+};
+```
+In your app, handle the call:
+- For .txt: Read as string using fs module.
+- For PDF: Use pdf-parse library to extract text.
+- For images: Use a vision API (e.g., another Gemini model) to generate description, or simple alt text.
+
+Integrate in API call:
+```javascript
+const config = { tools: [{ functionDeclarations: [readFileTool] }] };
+const response = await ai.models.generateContent({ model: 'gemini-2.5-flash-native-audio-preview-12-2025', contents: 'Read attached file', config });
+if (response.functionCalls) {
+  const args = response.functionCalls[0].args;
+  // Execute read: e.g., const content = fs.readFileSync(args.file_name, 'utf8');
+  // Send back: await ai.models.generateContent({ ..., parts: [{ functionResponse: { name: 'read_file', response: { content } } }] });
+}
+```
+
+### Troubleshooting Common Issues
+- **Wrong Answers on Images**: Model may lack vision; tool should return textual descriptions instead of binary data.
+- **File Detection but No Content**: Ensure tool returns actual data, not just names. Use base64 for any inline needs, but prefer text.
+- **Multiple Files**: Handle in tool params as arrays (e.g., "file_names": {type: "array"}).
+- Test with official SDK: Install `@google/generative-ai` for Node.js. Start sessions with config for modalities.
+
+For developer implementation, provide this report to enable tool-based file handling, potentially switching to full Gemini 2.5 Flash if live audio isn't essential.
+
+---
+The Gemini-2.5-Flash-Native-Audio-Preview-12-2025 is a specialized preview model from Google, optimized for the Gemini Live API to enable low-latency, bidirectional real-time interactions involving text, audio, and video. Released in December 2025, it builds on the Gemini 2.5 Flash foundation but emphasizes native audio processing for more natural voice agents, supporting features like enhanced voice quality in 24 languages, proactive audio responses, and affective dialog. This model is accessible via the Google AI SDK, Vertex AI, and Firebase AI Logic, with the developer API name "gemini-2.5-flash-native-audio-preview-12-2025" and Vertex equivalent "gemini-live-2.5-flash-native-audio."
+
+#### Model Capabilities and Limitations
+The model's design prioritizes live scenarios, such as voice agents or streaming conversations, with a knowledge cutoff around June 2025 and token limits of 131,072 input/8,192 output. Key capabilities include:
+- **Native Audio Output**: Generates 24 kHz PCM audio for expressive, human-like responses.
+- **Function Calling**: Supported, allowing integration with external tools like file readers.
+- **Thinking and Proactivity**: Configurable for internal reasoning (up to 1024 tokens) and proactive audio.
+- **Voice Activity Detection (VAD)**: Automatic handling of interruptions in audio streams.
+
+However, it has notable limitations compared to standard Gemini 2.5 Flash:
+- No batch API, caching, code execution, file search, image generation, or structured outputs.
+- Session durations: 15 minutes for audio-only, 2 minutes with video.
+- Multimodal inputs are restricted; while some Vertex AI docs suggest image support, developer previews explicitly exclude direct images, PDFs, or files. This discrepancy may stem from preview status, where full multimodality (e.g., up to 3,000 images per prompt in non-live variants) is not yet enabled.
+
+| Capability | Supported in This Model? | Notes/Alternatives |
+|------------|--------------------------|--------------------|
+| Text Input/Output | Yes | Plain text via turns; ideal for extracted file content. |
+| Audio Input/Output | Yes (Native) | Raw PCM; up to ~8.4 hours input. Use for audio files. |
+| Video Input | Yes | Streaming frames; potential workaround for images as single-frame video, though not recommended. |
+| Image Input | No (Preview Limitation) | Use tools to describe images textually; Vertex variant may differ. |
+| PDF/Document Input | No | No file search; extract text via tools. |
+| Function Calling | Yes | For custom file reading; supports compositional calls. |
+| File Uploads | No (Directly) | Use general Files API for URIs, but not searchable here. |
+
+#### Data Sending Formats and Best Practices
+To address your app's attach file logic, format data to match the model's inputs. The observed issue—detecting names but failing on content—likely arises from unsupported modalities, where the model falls back to incomplete processing.
+
+- **Text (.txt or Extracted Content)**: Send as user parts in sessions. For attachments, your tool should read and return strings. MIME: N/A (plain text).
+- **Audio Files**: Convert to raw 16-bit PCM little-endian. Send via `send_realtime_input` with MIME "audio/pcm;rate=<rate>". Base64 if buffering. Max: 1 million tokens (~8.4 hours).
+- **Images**: Not supported directly; tool should return textual descriptions (e.g., "The image shows a red car"). If using Vertex AI, inline base64 with MIME like "image/jpeg" (max 7 MB). Supported types: image/png, jpeg, webp, heic, heif.
+- **PDFs/Documents**: Extract text using libraries (e.g., pdf-parse in Node.js) via tools. No direct upload; max 50 MB if using Files API in compatible models. Return as text to avoid misinterpretation.
+- **Multiple Files**: Define tool params as arrays. Model can call sequentially if needed.
+
+Session Setup Example (Node.js for Your Stack):
+```javascript
+const { GoogleGenAI } = require('@google/generative-ai');
+const ai = new GoogleGenAI(process.env.API_KEY);
+const model = 'gemini-2.5-flash-native-audio-preview-12-2025';
+const config = {
+  responseModalities: ['TEXT'], // Or 'AUDIO' for voice
+  tools: [{ functionDeclarations: [yourFileReadTool] }]
+};
+const session = await ai.live.connect({ model, config });
+session.sendClientContent({ turns: [{role: 'user', parts: [{text: 'Read attached image.pdf'}]}], turnComplete: true });
+```
+
+For wrong image answers, ensure tools avoid binary returns; use descriptions. If live audio is secondary, consider switching to "gemini-2.5-flash" for full image/PDF support (inputs: text, images, audio, video).
+
+#### Tool Implementation for Attachments
+Leverage function calling to create a "attach_files_tool" that reads and formats content. In your Electron/React app, on "add file" button click, store files locally, then let the model call the tool.
+
+Full Tool Example:
+```javascript
+// Tool Schema
+const attachFilesTool = {
+  name: 'attach_and_read_files',
+  description: 'Reads multiple attached files and returns their content or descriptions.',
+  parameters: {
+    type: 'object',
+    properties: {
+      files: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            file_name: { type: 'string' },
+            file_type: { type: 'string' }
+          }
+        },
+        description: 'List of files with names and types.'
+      }
+    },
+    required: ['files']
+  }
+};
+
+// Execution in App (using fs and pdf-parse as example)
+const fs = require('fs');
+const pdf = require('pdf-parse');
+function executeAttachFiles(args) {
+  let results = [];
+  args.files.forEach(file => {
+    if (file.file_type === 'txt') {
+      results.push({ file: file.file_name, content: fs.readFileSync(file.file_name, 'utf8') });
+    } else if (file.file_type === 'pdf') {
+      pdf(fs.readFileSync(file.file_name)).then(data => results.push({ file: file.file_name, content: data.text }));
+    } else if (file.file_type === 'image') {
+      // Use external vision API or placeholder
+      results.push({ file: file.file_name, content: 'Description: [Generated desc]' });
+    }
+  });
+  return results;
+}
+```
+
+After tool call, send response back to model for processing. This ensures accurate replies by providing understandable text data.
+
+#### Potential Workarounds and Recommendations
+- **Files API Integration**: Upload files for URIs (MIME: application/pdf, text/plain), but since file search is unsupported, reference in tools only. Max 2 GB/file, 48-hour expiry.
+- **Counterarguments on Multimodality**: While some sources claim image support, preview docs emphasize audio focus, suggesting testing in your environment. If issues persist, use non-preview "gemini-2.5-flash" for broader support (e.g., 3,000 images/prompt).
+- **Performance Tips**: Use low temperature for deterministic tool calls; limit tools to 10-20; validate schemas to avoid errors.
+- **Deployment in Your App**: In Electron/Node/React, handle WebSocket for live sessions. Store attached files locally, trigger tool on model request.
+
+This comprehensive approach should enable your developer to implement reliable file handling, ensuring the model understands and replies accurately to attached data.
+
+### Key Citations
+- [Gemini 2.5 Flash with Gemini Live API | Generative AI on Vertex AI](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-5-flash-live-api)
+- [Live API capabilities guide | Gemini API - Google AI for Developers](https://ai.google.dev/gemini-api/docs/live-guide)
+- [Gemini models | Gemini API | Google AI for Developers](https://ai.google.dev/gemini-api/docs/models)
+- [Learn about supported models | Firebase AI Logic - Google](https://firebase.google.com/docs/ai-logic/models)
+- [Gemini Live API plugin - LiveKit Documentation](https://docs.livekit.io/agents/models/realtime/plugins/gemini)
+- [Gemini 2.5 Flash | Generative AI on Vertex AI](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-5-flash)
+- [Get started with Live API | Gemini API - Google AI for Developers](https://ai.google.dev/gemini-api/docs/live)
+- [How to use Gemini Live API Native Audio in Vertex AI](https://cloud.google.com/blog/topics/developers-practitioners/how-to-use-gemini-live-api-native-audio-in-vertex-ai)

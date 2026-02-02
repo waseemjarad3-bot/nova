@@ -1,0 +1,55 @@
+
+
+(Copy the text between the lines below and send it to your AI agent along with the reference sketch image)
+
+---
+
+**Role:** You are an expert Senior UI/UX Developer and Frontend Engineer specializing in building futuristic, high-fidelity data interfaces (similar to Iron Man's J.A.R.V.I.S.).
+
+**Objective:** Your sole task is to completely redesign and recreate the user interface of the current desktop application from scratch. You must discard whatever UI currently exists. The new design must be a pixel-perfect structural implementation of the provided **sketch reference image**, styled strictly using the **J.A.R.V.I.S. Color Palette Report** I previously sent you.
+
+**Mandatory Constraints & Design Principles:**
+
+1. **Structural Fidelity (The Skeleton):** The layout, positioning, sizing, and hierarchy of every element must *exactly* match the provided sketch reference image. Do not add, remove, or rearrange any components. If a box is shown in the sketch, it must exist in your code in that exact location.
+2. **Color Application:** You have full creative freedom on *how* to apply colors, but you must *ONLY* use the colors defined in the "J.A.R.V.I.S. Color Palette Report". Use the glowing cyan for active elements/borders, dark teal/transparents for backgrounds, and amber/red for specific highlights as per the report's guidelines. The final result should feel glowing, holographic, and futuristic.
+3. **Content Placeholder:** Where actual data is not available, use the exact text placeholders shown in the sketch (e.g., "Cpu = 30%", "camera offline", "Today headline...", text lines in transcription).
+
+---
+
+**Detailed Component Breakdown (Refer to sketch image):**
+
+You are required to build the following structure based on the reference image:
+
+**A. Main Window Container:** A large, rounded-corner application window that holds the entire interface.
+
+**B. Top Navigation Bar:**
+
+* **Top Left:** A segmented control or tab group containing exactly three items: "Notes | Tasks | contacts".
+* **Top Center:** A prominent segmented controller for input modes: "Chat | Voice | Both".
+* **Top Right:** A settings gear icon.
+
+**C. Left Sidebar Column (Three stacked panels):**
+
+1. **Top Panel:** A container displaying a "camera offline" icon and label.
+2. **Middle Panel (System Stats):** Four rows showing stats for "Cpu", "Ram", "Disk", and "Space" with corresponding percentage values and visual progress bars, exactly as drawn.
+3. **Bottom Panel (News Feed):** A section titled "Today headline" containing a multi-line bulleted list text block, followed by a weather summary section at the very bottom with small weather icons.
+
+**D. Middle Section (The Core Workflow):**
+
+* **Folder Nav (Left side of middle section):** A vertical list of three folder icons labeled "docs", "business", and "excel data".
+* **The Connector Hub (CRITICAL):** To the right of the folders, you must precisely recreate the flow diagram shown in the sketch. This involves:
+* An "Add files" entry point.
+* Three stacked block elements labeled "memory", "history", and "User".
+* **Connecting Lines:** You must draw distinct connecting lines originating from "Add files", "memory", "history", and "User". These lines must converge into a single central node point, which then connects directly into the large circular element on the right. This visual data flow is essential.
+
+
+* **Action Interface:** A large circular visual element (potential voice visualizer space) with a "Start" button placed directly beneath it.
+* **Bottom Content Display:** A large rectangular panel at the bottom spanning the width of the middle section. It must contain the placeholder title "images/diagram/mindmap /any visual will apear here", followed by the descriptive placeholder text blocks shown in the sketch regarding helping the user understand concepts.
+
+**E. Right Sidebar Column:**
+
+* A tall panel titled "Transcription" containing multiple horizontal placeholder lines indicating where text will appear.
+
+**Deliverable:** A fully functional frontend code structure (HTML/CSS/React/Vue etc., depending on your stack) that looks exactly like a futuristic J.A.R.V.I.S. version of the provided pencil sketch.
+
+---
