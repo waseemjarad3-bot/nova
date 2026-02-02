@@ -252,6 +252,61 @@
   body {
     overflow-y: auto !important;
   }
+
+  /* Ensure full height on mobile with safe areas */
+  html,
+  body,
+  #root {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    height: 100%;
+  }
+
+  /* Fix for mobile viewport units */
+  .h-screen {
+    height: 100vh;
+    height: 100dvh;
+    /* Dynamic viewport height for mobile browsers */
+  }
+
+  /* Ensure main content doesn't get cut off */
+  main {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+  }
+
+  /* Scale down elements that are too large for mobile */
+  .text-xl {
+    font-size: 1rem !important;
+  }
+
+  .text-2xl {
+    font-size: 1.125rem !important;
+  }
+
+  /* Ensure the globe/AI portal fits on mobile */
+  .ai-globe-container {
+    transform: scale(0.7);
+  }
+}
+
+/* Extra small mobile screens */
+@media (max-width: 480px) {
+  .h-16 {
+    height: 3rem !important;
+    /* Smaller header on very small screens */
+  }
+
+  .px-6 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Even smaller globe on tiny screens */
+  .ai-globe-container {
+    transform: scale(0.5);
+  }
 }
 
 .mobile-nav-item {
