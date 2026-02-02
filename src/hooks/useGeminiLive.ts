@@ -142,10 +142,7 @@ export const useGeminiLive = ({
   }, [onSpeakingChanged]);
 
   const startAudioHardware = useCallback(async () => {
-    if (apiClient.isBrowser) {
-      console.warn('[NOVA-AUDIO] Audio hardware initialization skipped in browser environment.');
-      return;
-    }
+    // BROWSER-SAFE: AudioContext and getUserMedia work in browser after user interaction
     if (isHardMuted || micStreamRef.current) return;
 
     try {
