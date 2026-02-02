@@ -25,14 +25,14 @@ const FolderExplorer: React.FC<FolderExplorerProps> = ({
     handleStartRename
 }) => {
     return (
-        <div className="w-24 lg:w-28 xl:w-32 flex flex-col items-center gap-4 lg:gap-6 py-4 lg:py-8 rounded-[2rem] lg:rounded-[3rem] border border-white/[0.05] bg-j-surface/50 backdrop-blur-xl shadow-2xl h-fit">
+        <div className="w-20 sm:w-24 lg:w-28 xl:w-32 flex flex-col items-center gap-3 sm:gap-4 lg:gap-6 py-4 lg:py-8 rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[3rem] border border-white/[0.05] bg-j-surface/50 backdrop-blur-xl shadow-2xl h-fit">
             {/* Import Button */}
             <div
                 onClick={handleImportFolder}
                 className="flex flex-col items-center gap-1.5 lg:gap-2 group transition-transform hover:scale-110 mb-2"
             >
-                <div className="w-12 h-9 lg:w-16 lg:h-12 rounded-lg lg:rounded-xl bg-j-cyan/10 border border-j-cyan/30 flex items-center justify-center text-j-cyan cursor-pointer hover:bg-j-cyan hover:text-black transition-all shadow-[0_0_15px_rgba(0,229,255,0.2)]">
-                    <Plus size={24} />
+                <div className="w-10 h-7 sm:w-16 sm:h-12 rounded-lg lg:rounded-xl bg-j-cyan/10 border border-j-cyan/30 flex items-center justify-center text-j-cyan cursor-pointer hover:bg-j-cyan hover:text-black transition-all shadow-[0_0_15px_rgba(0,229,255,0.2)]">
+                    <Plus size={isMobile ? 18 : 24} />
                 </div>
                 <span className="text-[9px] text-j-cyan font-bold uppercase tracking-tighter">Import</span>
             </div>
@@ -55,9 +55,9 @@ const FolderExplorer: React.FC<FolderExplorerProps> = ({
                     {/* Icon Container: Opens Folder */}
                     <div
                         onClick={() => handleOpenFolder(folder.path)}
-                        className="w-12 h-9 lg:w-16 lg:h-12 rounded-lg lg:rounded-xl bg-black/40 border border-white/[0.1] flex items-center justify-center text-j-text-secondary cursor-pointer group-hover:text-j-cyan group-hover:bg-j-cyan/5 group-hover:border-j-cyan/30 transition-all shadow-inner"
+                        className="w-10 h-7 sm:w-16 sm:h-12 rounded-lg lg:rounded-xl bg-black/40 border border-white/[0.1] flex items-center justify-center text-j-text-secondary cursor-pointer group-hover:text-j-cyan group-hover:bg-j-cyan/5 group-hover:border-j-cyan/30 transition-all shadow-inner"
                     >
-                        <Folder size={24} />
+                        <Folder size={isMobile ? 18 : 24} />
                     </div>
 
                     {/* Text Container: Renames Folder */}

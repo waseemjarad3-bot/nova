@@ -40,7 +40,7 @@ const SystemControls: React.FC<SystemControlsProps> = ({
                 ref={addFilesRef}
                 onClick={() => { playClick(); handleNativeFileSelect(); }}
 
-                className="group px-4 py-3 rounded-2xl border border-j-cyan/20 bg-j-panel/40 flex items-center gap-4 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer relative overflow-hidden"
+                className="group px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border border-j-cyan/20 bg-j-panel/40 flex items-center gap-3 sm:gap-4 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer relative overflow-hidden"
             >
                 <div className="p-2 rounded-xl bg-j-cyan/10 text-j-cyan group-hover:scale-110 transition-transform">
                     <Paperclip size={18} className="group-hover:rotate-12 transition-transform" />
@@ -93,14 +93,14 @@ const SystemControls: React.FC<SystemControlsProps> = ({
                             }
                         }}
                         className={`
-              group px-4 py-3 rounded-2xl border bg-j-panel/40 flex items-center gap-4 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer relative overflow-hidden
+              group px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border bg-j-panel/40 flex items-center gap-3 sm:gap-4 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer relative overflow-hidden
               ${btn.label === 'memory' ? 'border-j-crimson/20 hover:border-j-crimson/50' : 'border-white/[0.05] hover:border-white/20'}
             `}>
                         <div className={`p-2 rounded-xl bg-${btn.color}/10 text-${btn.color} group-hover:scale-110 transition-transform`}>
                             <btn.icon size={18} />
                         </div>
                         <div className="flex flex-col items-start">
-                            <span className="text-xs font-bold text-white uppercase tracking-wider">{btn.label}</span>
+                            <span className="text-[10px] sm:text-xs font-bold text-white uppercase tracking-wider">{btn.label}</span>
                             <span className="text-[9px] text-j-text-muted font-mono uppercase">System Access</span>
                         </div>
                         <div className={`absolute inset-0 bg-${btn.color}/5 opacity-0 group-hover:opacity-100 transition-opacity`}></div>

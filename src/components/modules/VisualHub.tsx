@@ -97,15 +97,15 @@ const VisualHub: React.FC<VisualHubProps> = ({
         <div className={`
       ${isExpanded
                 ? 'fixed inset-4 z-[100] flex items-center justify-center'
-                : 'hidden md:flex flex-[0.8] xl:flex-[1.0] items-start justify-center pb-6 lg:pb-12 px-4 lg:px-8'
+                : 'flex flex-col md:flex-row flex-[0.8] xl:flex-[1.0] items-center md:items-start justify-center pb-6 lg:pb-12 px-4 lg:px-8 mt-4 md:mt-0'
             }
     `}>
             <div className={`
         ${isExpanded
                     ? 'w-full h-full rounded-[2.5rem] lg:rounded-[3.5rem]'
-                    : 'w-full max-w-[650px] xl:max-w-[850px] h-full rounded-[2.5rem] lg:rounded-[3.5rem]'
+                    : 'w-full max-w-[400px] sm:max-w-[650px] xl:max-w-[850px] min-h-[200px] h-auto md:h-full rounded-[1.5rem] sm:rounded-[2.5rem] lg:rounded-[3.5rem]'
                 }
-        border border-white/[0.08] bg-j-panel/95 backdrop-blur-3xl p-6 relative overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] flex flex-col items-center justify-center text-center group transition-all duration-500 hover:border-j-cyan/20
+        border border-white/[0.08] bg-j-panel/95 backdrop-blur-3xl p-4 sm:p-6 relative overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] flex flex-col items-center justify-center text-center group transition-all duration-500 hover:border-j-cyan/20
       `}>
                 {/* Sci-Fi Decorative Corners */}
                 <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-j-cyan/30 rounded-tl-3xl pointer-events-none opacity-40 group-hover:opacity-100 transition-opacity"></div>

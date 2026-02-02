@@ -967,7 +967,7 @@ function App() {
           </div>
 
           <section className={`flex-1 flex flex-col min-w-0 relative bg-gradient-to-b from-j-void/50 to-j-void ${windowWidth < 1024 && mobileTab !== 'intelligence' ? 'hidden' : 'flex'}`}>
-            <div className={`flex-1 flex p-4 lg:p-6 gap-6 lg:gap-10 relative items-center justify-center ${windowWidth < 640 ? 'overflow-y-auto' : 'overflow-hidden'}`} ref={svgContainerRef}>
+            <div className={`flex-1 flex flex-col items-center p-4 lg:p-6 gap-4 sm:gap-10 relative overflow-y-auto overflow-x-hidden no-scrollbar`} ref={svgContainerRef}>
 
               {activeTab === 'intelligence' ? (
                 <>
