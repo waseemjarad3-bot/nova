@@ -13,7 +13,7 @@ interface SystemConnectionsProps {
 }
 
 const SystemConnections: React.FC<SystemConnectionsProps> = ({ paths, windowWidth }) => {
-    if (windowWidth < 800) return null;
+    // Enabled on all screens for "Full UI" experience
 
     return (
         <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" style={{ overflow: 'visible' }}>

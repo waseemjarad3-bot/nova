@@ -829,15 +829,15 @@ function App() {
           {/* Logo Section */}
           <div className="flex items-center gap-4 mr-8">
             <img src="/logo.jpg" alt="Logo" className="w-12 h-12 object-contain rounded-lg" />
-            <div className="hidden md:flex items-center gap-2">
-              <span className="text-xl font-bold tracking-widest text-white neon-glow">{assistantConfig.assistantName.toUpperCase()}</span>
-              <span className="text-xl font-bold tracking-widest text-[#00E5FF] neon-glow ml-4">
-                Your Second Brain   🧠   𝓦2𝓙
+            <div className="flex items-center gap-2">
+              <span className="text-sm sm:text-lg md:text-xl font-bold tracking-widest text-white neon-glow">{assistantConfig.assistantName.toUpperCase()}</span>
+              <span className="hidden xs:inline-block text-[10px] sm:text-lg md:text-xl font-bold tracking-widest text-[#00E5FF] neon-glow ml-2 sm:ml-4 whitespace-nowrap">
+                SECOND BRAIN 🧠 𝓦2𝓙
               </span>
             </div>
           </div>
 
-          <div className="hidden sm:flex items-center">
+          <div className="flex items-center">
             <div className="flex border border-white/[0.1] rounded-lg overflow-hidden bg-j-surface/50">
               {['Intelligence', 'Notes', 'Tasks'].map((item) => (
                 <button
@@ -847,12 +847,13 @@ function App() {
                     setActiveTab(item.toLowerCase());
                   }}
 
-                  className={`px-4 py-1.5 text-sm font-medium transition-all border-r border-white/[0.1] ${activeTab === item.toLowerCase() || (item === 'Intelligence' && activeTab === 'notes_placeholder')
+                  className={`px-2 sm:px-4 py-1 sm:py-1.5 text-[10px] sm:text-sm font-medium transition-all border-r border-white/[0.1] ${activeTab === item.toLowerCase() || (item === 'Intelligence' && activeTab === 'notes_placeholder')
                     ? 'bg-j-cyan/10 text-j-cyan shadow-[inset_0_0_15px_rgba(0,229,255,0.15)]'
                     : 'text-j-text-secondary hover:text-j-text-primary hover:bg-white/5'
                     } last:border-r-0`}
                 >
-                  {item}
+                  <span className="hidden xs:inline">{item}</span>
+                  <span className="xs:hidden">{item.charAt(0)}</span>
                 </button>
               ))}
             </div>
@@ -966,13 +967,13 @@ function App() {
           </div>
 
           <section className={`flex-1 flex flex-col min-w-0 relative bg-gradient-to-b from-j-void/50 to-j-void ${windowWidth < 1024 && mobileTab !== 'intelligence' ? 'hidden' : 'flex'}`}>
-            <div className="flex-1 flex p-4 lg:p-6 gap-6 lg:gap-10 relative items-center justify-center overflow-hidden" ref={svgContainerRef}>
+            <div className={`flex-1 flex p-4 lg:p-6 gap-6 lg:gap-10 relative items-center justify-center ${windowWidth < 640 ? 'overflow-y-auto' : 'overflow-hidden'}`} ref={svgContainerRef}>
 
               {activeTab === 'intelligence' ? (
                 <>
                   <SystemConnections paths={paths} windowWidth={windowWidth} />
 
-                  <div className="hidden sm:flex items-center z-10 py-4 h-full gap-10">
+                  <div className="flex flex-col sm:flex-row items-center z-10 py-4 h-full gap-4 sm:gap-10 overflow-y-auto no-scrollbar sm:overflow-visible">
                     <FolderExplorer
                       importedFolders={importedFolders}
                       handleImportFolder={handleImportFolder}
