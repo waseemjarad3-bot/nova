@@ -946,7 +946,8 @@ function App() {
         {/* Main Content */}
         <main className="flex-1 flex overflow-hidden z-10 relative bg-black/10">
 
-          <div className={`${windowWidth < 1024 && mobileTab !== 'dashboard' ? 'hidden' : 'flex'} h-full shrink-0`}>
+          {/* SidebarLeft - only show on desktop (lg+) or when dashboard tab is active on mobile */}
+          <div className={`${windowWidth < 1024 && mobileTab !== 'dashboard' ? 'hidden' : 'block'} h-full shrink-0`}>
             <SidebarLeft
               currentWidth={currentLeftWidth}
               isResizing={isResizingLeft}
@@ -1059,7 +1060,8 @@ function App() {
             )}
           </section>
 
-          <div className={`${windowWidth < 1280 && mobileTab !== 'chat' ? 'hidden' : 'flex'} h-full shrink-0`}>
+          {/* SidebarRight - only show on desktop (lg+) or when chat tab is active on mobile */}
+          <div className={`${windowWidth < 1024 && mobileTab !== 'chat' ? 'hidden' : 'block'} h-full shrink-0`}>
             <SidebarRight
               currentWidth={currentRightWidth}
               isResizing={isResizingLeft || isResizingRight}
