@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Key, ShieldCheck, AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
 import { useAudio } from '../../hooks/useAudio';
+import { apiClient } from '../../utils/api-client';
 
 interface SecretKeyModalProps {
     isOpen: boolean;
@@ -32,7 +33,7 @@ const SecretKeyModal: React.FC<SecretKeyModalProps> = ({ isOpen, onClose }) => {
                 throw new Error('Invalid Key format. It should start with "AIza"');
             }
 
-            const success = await (window as any).electronAPI.invoke('save-gemini-token', key.trim());
+            const success = await apiClient.invoke('save-gemini-token', key.trim());
             if (success) {
                 onClose(key.trim());
             } else {

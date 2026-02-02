@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Download, X, Check, RefreshCw } from 'lucide-react';
 
-const electronAPI = (window as any).electronAPI;
+import { apiClient } from '../../utils/api-client';
+
+// No top-level electronAPI access
 
 interface UpdateInfo {
     version: string;
@@ -19,6 +21,8 @@ interface DownloadProgress {
 type UpdateState = 'idle' | 'available' | 'downloading' | 'ready';
 
 const UpdateNotification: React.FC = () => {
+    const electronAPI = typeof window !== 'undefined' ? (window as any).electronAPI : null;
+    if (!apiClient.isElectron || !electronAPI) return null;
     const [updateState, setUpdateState] = useState<UpdateState>('idle');
     const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null);
     const [downloadProgress, setDownloadProgress] = useState<DownloadProgress | null>(null);

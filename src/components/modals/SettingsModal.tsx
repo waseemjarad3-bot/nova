@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Settings, Database, Key, Trash2, Save, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useAudio } from '../../hooks/useAudio';
+import { apiClient } from '../../utils/api-client';
 
 interface SettingsModalProps {
     isOpen: boolean;
@@ -16,12 +17,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
 
     useEffect(() => {
         if (isOpen) {
-            (window as any).electronAPI.invoke('get-gemini-token').then((key: string) => {
+            apiClient.invoke('get-gemini-token').then((key: string) => {
                 if (key) setApiKey(key);
             });
             // Fetch version
-            (window as any).electronAPI.invoke('get-app-version').then((version: string) => {
-                setAppVersion(version);
+            apiClient.invoke('get-app-version').then((version: string) => {
+                if (version) setAppVersion(version);
             });
         }
     }, [isOpen]);
@@ -31,7 +32,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
         setIsSaving(true);
         setMessage(null);
         try {
-            const success = await (window as any).electronAPI.invoke('save-gemini-token', apiKey);
+            const success = await apiClient.invoke('save-gemini-token', apiKey);
             if (success) {
                 setMessage({ type: 'success', text: 'Settings updated successfully!' });
                 setTimeout(() => setMessage(null), 3000);
@@ -48,7 +49,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     const handleClearMemory = async () => {
         playClick();
         if (window.confirm("Bhai, kya aap waqai saari memories clear karna chahte hain? Yeh wapas nahi aayengi.")) {
-            await (window as any).electronAPI.invoke('save-memories', []);
+            await apiClient.invoke('save-memories', []);
             setMessage({ type: 'success', text: 'Memories cleared!' });
             setTimeout(() => setMessage(null), 3000);
         }

@@ -6,6 +6,9 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   base: '/',
+  define: {
+    'import.meta.env.VITE_IS_DESKTOP': JSON.stringify(process.env.VITE_IS_DESKTOP === 'true'),
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

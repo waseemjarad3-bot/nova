@@ -101,35 +101,51 @@ export const useGeminiLive = ({
   const micStreamRef = useRef<MediaStream | null>(null);
 
   const cleanup = useCallback(() => {
-    console.log('Cleaning up session and audio...');
-    if (micStreamRef.current) {
-      micStreamRef.current.getTracks().forEach(track => track.stop());
-    }
-    if (audioContextInputRef.current && audioContextInputRef.current.state !== 'closed') {
-      audioContextInputRef.current.close();
-    }
-    if (audioContextOutputRef.current && audioContextOutputRef.current.state !== 'closed') {
-      audioContextOutputRef.current.close();
-    }
-    if (sessionRef.current) {
-      try {
-        sessionRef.current.close();
-      } catch (e) {
-        console.warn('Error closing session:', e);
-      }
+    if (apiClient.isBrowser) {
+      console.log('[NOVA-BROWSER] Skipping desktop-only cleanup');
+      setStatus(ConnectionStatus.DISCONNECTED);
+      return;
     }
 
-    micStreamRef.current = null;
-    audioContextInputRef.current = null;
-    audioContextOutputRef.current = null;
-    sessionRef.current = null;
-    nextStartTimeRef.current = 0;
-    sourcesRef.current.clear();
-    setStatus(ConnectionStatus.DISCONNECTED);
-    onSpeakingChanged?.(false);
+    try {
+      console.log('Cleaning up session and audio...');
+      if (micStreamRef.current) {
+        micStreamRef.current.getTracks().forEach(track => {
+          try { track.stop(); } catch (e) { }
+        });
+      }
+      if (audioContextInputRef.current && audioContextInputRef.current.state !== 'closed') {
+        try { audioContextInputRef.current.close(); } catch (e) { }
+      }
+      if (audioContextOutputRef.current && audioContextOutputRef.current.state !== 'closed') {
+        try { audioContextOutputRef.current.close(); } catch (e) { }
+      }
+      if (sessionRef.current) {
+        try {
+          sessionRef.current.close();
+        } catch (e) {
+          console.warn('Error closing session:', e);
+        }
+      }
+    } catch (err) {
+      console.warn('Error during cleanup:', err);
+    } finally {
+      micStreamRef.current = null;
+      audioContextInputRef.current = null;
+      audioContextOutputRef.current = null;
+      sessionRef.current = null;
+      nextStartTimeRef.current = 0;
+      sourcesRef.current.clear();
+      setStatus(ConnectionStatus.DISCONNECTED);
+      onSpeakingChanged?.(false);
+    }
   }, [onSpeakingChanged]);
 
   const startAudioHardware = useCallback(async () => {
+    if (apiClient.isBrowser) {
+      console.warn('[NOVA-AUDIO] Audio hardware initialization skipped in browser environment.');
+      return;
+    }
     if (isHardMuted || micStreamRef.current) return;
 
     try {
@@ -246,6 +262,10 @@ export const useGeminiLive = ({
   }, [voiceVolume]);
 
   const connect = useCallback(async () => {
+    if (apiClient.isBrowser) {
+      console.warn('[NOVA-SAFE] Gemini Live connection disabled in browser environment.');
+      return;
+    }
     try {
       setStatus(ConnectionStatus.CONNECTING);
       setError(null);

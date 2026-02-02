@@ -1,26 +1,33 @@
 import { useEffect, useState, useRef } from 'react';
 
-const electronAPI = (window as any).electronAPI;
+import { apiClient } from '../utils/api-client';
+
+// No top-level electronAPI access
 
 export const useZoom = () => {
   const [zoomLevel, setZoomLevel] = useState(1);
   const isInitialApplied = useRef(false);
+  const electronAPI = typeof window !== 'undefined' ? (window as any).electronAPI : null;
+
+  if (!apiClient.isElectron || !electronAPI) {
+    return { zoomLevel: 1 };
+  }
 
   const calculateOptimalZoom = () => {
     // 2000px target width (Safe for all sidebars + hub)
     const targetWidth = 2000;
-    
+
     // Asli Hardware Width use karenge (ye kabhi nahi badalti, isliye stability 100% hogi)
     const hardwareWidth = window.screen.width;
-    
+
     const ratio = hardwareWidth / targetWidth;
-    
+
     // Limits: Laptop screens ke liye ~0.65-0.75, Desktop ke liye 1.0
     return Math.min(Math.max(ratio, 0.6), 1.2);
   };
 
   useEffect(() => {
-    if (!electronAPI) return;
+    if (!apiClient.isElectron) return;
 
     const applyScaling = () => {
       const optimal = calculateOptimalZoom();
@@ -31,7 +38,9 @@ export const useZoom = () => {
     };
 
     // Immediately apply scaling to avoid visual jumps
-    applyScaling();
+    if (apiClient.isElectron) {
+      applyScaling();
+    }
 
     // Listen for resize events to re-apply if needed (optional, mostly for dev)
     /* window.addEventListener('resize', applyScaling); */
@@ -42,12 +51,12 @@ export const useZoom = () => {
       if (isControl) {
         if (e.key === '=' || e.key === '+') {
           e.preventDefault();
-          const current = (window as any).electronAPI.getZoomFactor();
-          (window as any).electronAPI.setZoomFactor(Math.min(current + 0.1, 2.5));
+          const current = (window as any).electronAPI?.getZoomFactor();
+          if (current !== undefined) (window as any).electronAPI?.setZoomFactor(Math.min(current + 0.1, 2.5));
         } else if (e.key === '-' || e.key === '_') {
           e.preventDefault();
-          const current = (window as any).electronAPI.getZoomFactor();
-          (window as any).electronAPI.setZoomFactor(Math.max(current - 0.1, 0.4));
+          const current = (window as any).electronAPI?.getZoomFactor();
+          if (current !== undefined) (window as any).electronAPI?.setZoomFactor(Math.max(current - 0.1, 0.4));
         } else if (e.key === '0') {
           e.preventDefault();
           applyScaling();
@@ -55,10 +64,13 @@ export const useZoom = () => {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    if (apiClient.isElectron) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
     return () => {
-      // clearTimeout(timer); // Timer removed
-      window.removeEventListener('keydown', handleKeyDown);
+      if (apiClient.isElectron) {
+        window.removeEventListener('keydown', handleKeyDown);
+      }
     };
   }, []);
 

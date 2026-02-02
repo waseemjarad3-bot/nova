@@ -124,12 +124,17 @@ function App() {
     apiClient.invoke('load-tasks').then(setTasks);
 
     // Verify API Key
-    apiClient.invoke('get-gemini-token').then((key: string) => {
-      setHasCheckedKey(true);
-      if (!key) {
-        setIsSecretKeyModalOpen(true);
-      }
-    });
+    apiClient.invoke('get-gemini-token')
+      .then((key: string) => {
+        setHasCheckedKey(true);
+        if (!key) {
+          setIsSecretKeyModalOpen(true);
+        }
+      })
+      .catch((err) => {
+        console.warn("[NOVA-SAFE] Token check skipped or failed in browser:", err);
+        setHasCheckedKey(true); // Don't block mounting
+      });
 
     // Load Voice Config
     apiClient.invoke('load-voice-config').then((config: any) => {
@@ -782,7 +787,8 @@ function App() {
   }, [updatePaths]);
 
 
-  if (!hasCheckedKey) return <div className="h-screen w-screen bg-j-void" />; // Brief black screen while checking
+  // Hard Mounting: Only block render in Electron; browser should mount immediately to avoid black screen.
+  if (!hasCheckedKey && apiClient.isElectron) return <div className="h-screen w-screen bg-j-void" />;
 
   if (isSecretKeyModalOpen) {
     return (
