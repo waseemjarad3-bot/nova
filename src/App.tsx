@@ -790,6 +790,14 @@ function App() {
   // Hard Mounting: Only block render in Electron; browser should mount immediately to avoid black screen.
   if (!hasCheckedKey && apiClient.isElectron) return <div className="h-screen w-screen bg-j-void" />;
 
+  // Responsive Tab Support
+  const [mobileTab, setMobileTab] = useState<'intelligence' | 'chat' | 'dashboard'>('intelligence');
+
+  // PRIORITY 1: Show loading screens first - never interrupt these with modals
+  if (isInitialLoading) return <LoadingScreen onFinished={() => setIsInitialLoading(false)} assistantName={assistantConfig.assistantName} />;
+  if (isLoading) return <LoadingScreen assistantName={assistantConfig.assistantName} />;
+
+  // PRIORITY 2: After loading completes, show SecretKeyModal as full-screen gate if needed
   if (isSecretKeyModalOpen) {
     return (
       <div className="h-screen w-screen bg-j-void flex items-center justify-center">
@@ -805,12 +813,6 @@ function App() {
       </div>
     );
   }
-
-  // Responsive Tab Support
-  const [mobileTab, setMobileTab] = useState<'intelligence' | 'chat' | 'dashboard'>('intelligence');
-
-  if (isInitialLoading) return <LoadingScreen onFinished={() => setIsInitialLoading(false)} assistantName={assistantConfig.assistantName} />;
-  if (isLoading) return <LoadingScreen assistantName={assistantConfig.assistantName} />;
 
 
   return (
