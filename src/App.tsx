@@ -4,6 +4,7 @@ import { Settings } from 'lucide-react';
 import { useGeminiLive } from './hooks/useGeminiLive';
 import { useZoom } from './hooks/useZoom';
 import { useAudio } from './hooks/useAudio';
+import { useAudioGate } from './contexts/AudioGateContext';
 import { ConnectionStatus } from './types';
 
 
@@ -41,6 +42,7 @@ import { apiClient } from './utils/api-client';
 function App() {
   useZoom(); // Initialize zoom shortcuts
   const { playClick, playSound } = useAudio();
+  const { enableAudio } = useAudioGate();
   const [activeTab, setActiveTab] = useState('intelligence');
   const [isInitialLoading, setIsInitialLoading] = useState(true);
 
@@ -816,7 +818,7 @@ function App() {
 
 
   return (
-    <div className="h-screen w-screen bg-j-void text-j-text-primary font-sans overflow-hidden selection:bg-j-cyan/20 flex flex-col pb-[env(safe-area-inset-bottom)]">
+    <div onClick={enableAudio} className="h-screen w-screen bg-j-void text-j-text-primary font-sans overflow-hidden selection:bg-j-cyan/20 flex flex-col pb-[env(safe-area-inset-bottom)]">
       <div className="absolute inset-0 bg-hex-grid opacity-[0.05] pointer-events-none z-0"></div>
 
       <div className="w-full h-full flex flex-col relative z-10 bg-gradient-to-b from-transparent to-j-void/90">

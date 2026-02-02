@@ -23,12 +23,8 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onFinished, assistantName
     ];
 
     useEffect(() => {
-        // Attempt audio play
-        if (audioLoadingRef.current) {
-            audioLoadingRef.current.volume = 0.7;
-            audioLoadingRef.current.play().catch(console.error);
-        }
-
+        // BROWSER-SAFE: Do NOT auto-play audio on mount
+        // Intro animation runs silently in browser until user interacts
 
         let currentProgress = 0;
         const interval = setInterval(() => {
@@ -56,23 +52,8 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onFinished, assistantName
     }, []);
 
     const handleCompletion = () => {
-        if (audioLoadingRef.current) {
-            // Fade out loading sound
-            const fadeOut = setInterval(() => {
-                if (audioLoadingRef.current && audioLoadingRef.current.volume > 0.05) {
-                    audioLoadingRef.current.volume -= 0.05;
-                } else {
-                    clearInterval(fadeOut);
-                    audioLoadingRef.current?.pause();
-                }
-            }, 100);
-        }
-
-        if (audioFinishedRef.current) {
-            audioFinishedRef.current.volume = 0.8;
-            audioFinishedRef.current.play().catch(console.error);
-        }
-
+        // BROWSER-SAFE: Skip all audio on completion
+        // Audio will only play after user interaction via AudioGateContext
         setTimeout(() => {
             if (onFinished) onFinished();
         }, 750); // Reduced delay to 0.75s for faster entry
