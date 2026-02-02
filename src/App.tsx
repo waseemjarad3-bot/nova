@@ -984,6 +984,7 @@ function App() {
                       setTempFolderName={setTempFolderName}
                       handleFinishRename={handleFinishRename}
                       handleStartRename={handleStartRename}
+                      windowWidth={windowWidth}
                     />
 
                     <SystemControls

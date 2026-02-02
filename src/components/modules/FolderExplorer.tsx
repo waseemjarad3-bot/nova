@@ -11,6 +11,7 @@ interface FolderExplorerProps {
     setTempFolderName: (name: string) => void;
     handleFinishRename: () => void;
     handleStartRename: (idx: number, name: string) => void;
+    windowWidth: number;
 }
 
 const FolderExplorer: React.FC<FolderExplorerProps> = ({
@@ -22,8 +23,10 @@ const FolderExplorer: React.FC<FolderExplorerProps> = ({
     tempFolderName,
     setTempFolderName,
     handleFinishRename,
-    handleStartRename
+    handleStartRename,
+    windowWidth
 }) => {
+    const isMobile = windowWidth < 640;
     return (
         <div className="w-20 sm:w-24 lg:w-28 xl:w-32 flex flex-col items-center gap-3 sm:gap-4 lg:gap-6 py-4 lg:py-8 rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[3rem] border border-white/[0.05] bg-j-surface/50 backdrop-blur-xl shadow-2xl h-fit">
             {/* Import Button */}
