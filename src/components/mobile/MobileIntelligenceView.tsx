@@ -153,7 +153,7 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
             <main className="flex-1 flex overflow-hidden">
                 {/* Left Column - Brain + Controls */}
                 <div className="w-[45%] flex flex-col p-3 border-r border-white/[0.03] overflow-y-auto no-scrollbar">
-                    {/* Brain Visualization */}
+                    {/* Brain Visualization Area */}
                     <div className="flex-shrink-0 flex flex-col items-center mb-4">
                         <div className="relative">
                             <DotGlobe
@@ -166,22 +166,6 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
                             />
                             <div className={`absolute inset-[-8px] border border-dashed border-j-cyan/20 rounded-full ${isConnected ? 'animate-spin-slow' : ''
                                 }`} />
-
-                            {/* Camera Preview Overlay */}
-                            {isCameraOn && (
-                                <div className="absolute inset-0 rounded-full overflow-hidden border-2 border-j-cyan shadow-[0_0_20px_rgba(0,229,255,0.4)] z-20 bg-black">
-                                    <video
-                                        ref={videoRef}
-                                        autoPlay
-                                        playsInline
-                                        muted
-                                        className="w-full h-full object-cover scale-x-[-1]"
-                                    />
-                                </div>
-                            )}
-
-                            {/* Hidden canvas for frame capture */}
-                            <canvas ref={canvasRef} className="hidden" width="320" height="240" />
                         </div>
 
                         {/* Status Indicator */}
@@ -190,33 +174,16 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
                             {isConnected ? 'System Active' : status === ConnectionStatus.CONNECTING ? 'Initializing...' : 'Standby Mode'}
                         </span>
 
-                        {/* Button Row: INITIALIZE AI + Camera */}
-                        <div className="flex items-center gap-2 mt-3">
-                            {/* INITIALIZE AI / TERMINATE Button */}
-                            <button
-                                onClick={() => { playClick(); handleStartStop(); }}
-                                className={`px-5 py-2 rounded-full border text-[9px] font-mono transition-all uppercase tracking-[0.15em] font-bold shadow-lg ${isConnected
-                                    ? 'border-j-crimson/50 text-j-crimson hover:bg-j-crimson/20 shadow-j-crimson/20'
-                                    : 'border-j-cyan/40 text-j-cyan hover:bg-j-cyan/20 shadow-j-cyan/20'
-                                    }`}
-                            >
-                                {isConnected ? 'Terminate' : 'Initialize AI'}
-                            </button>
-
-                            {/* Camera Button */}
-                            <button
-                                onClick={() => { playClick(); toggleCamera(); }}
-                                disabled={isCameraLoading}
-                                className={`p-2.5 rounded-full border transition-all ${isCameraOn
-                                    ? 'bg-j-cyan/20 border-j-cyan/50 text-j-cyan shadow-[0_0_12px_rgba(0,229,255,0.3)]'
-                                    : isCameraLoading
-                                        ? 'bg-j-amber/20 border-j-amber/50 text-j-amber animate-pulse'
-                                        : 'bg-j-surface/60 border-white/10 text-j-text-muted hover:text-j-cyan hover:border-j-cyan/30'
-                                    }`}
-                            >
-                                {isCameraOn ? <Camera size={16} /> : <CameraOff size={16} />}
-                            </button>
-                        </div>
+                        {/* INITIALIZE AI / TERMINATE Button */}
+                        <button
+                            onClick={() => { playClick(); handleStartStop(); }}
+                            className={`mt-4 px-6 py-2 rounded-full border text-[9px] font-mono transition-all uppercase tracking-[0.15em] font-bold shadow-lg ${isConnected
+                                ? 'border-j-crimson/50 text-j-crimson hover:bg-j-crimson/20 shadow-j-crimson/20'
+                                : 'border-j-cyan/40 text-j-cyan hover:bg-j-cyan/20 shadow-j-cyan/20'
+                                }`}
+                        >
+                            {isConnected ? 'Terminate' : 'Initialize AI'}
+                        </button>
                     </div>
 
                     {/* Sidebar Controls */}
@@ -228,7 +195,7 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
                         handleNativeFileSelect={handleNativeFileSelect}
                     />
 
-                    {/* Visual Hub Button */}
+                    {/* Visual Hub Button Area */}
                     <div className="mt-4">
                         <MobileVisualHub
                             isExpanded={isVisualHubExpanded}
@@ -238,34 +205,75 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
                             isVisualizing={isVisualizing}
                         />
                     </div>
+
+                    {/* Hidden canvas for frame capture */}
+                    <canvas ref={canvasRef} className="hidden" width="320" height="240" />
                 </div>
 
-                {/* Right Column - Chat Panel */}
+                {/* Right Column - Camera Preview or Chat Panel */}
                 <div className="flex-1 flex flex-col p-3 overflow-hidden">
-                    <MobileChatPanel
-                        messages={messages}
-                        status={status}
-                        chatInput={chatInput}
-                        setChatInput={setChatInput}
-                        handleSendChat={handleSendChat}
-                        handleNativeFileSelect={handleNativeFileSelect}
-                        messagesEndRef={messagesEndRef}
-                        thinkingEnabled={thinkingEnabled}
-                        setThinkingEnabled={setThinkingEnabled}
-                        currentOutput={currentOutput}
-                        assistantName={assistantName}
-                    />
+                    {isCameraOn ? (
+                        <div className="flex-1 bg-black rounded-xl border border-j-cyan/30 overflow-hidden relative shadow-[0_0_30px_rgba(0,229,255,0.1)]">
+                            <video
+                                ref={videoRef}
+                                autoPlay
+                                playsInline
+                                muted
+                                className="w-full h-full object-cover scale-x-[-1]"
+                            />
+                            {/* Overlay info */}
+                            <div className="absolute top-4 left-4 flex items-center gap-2 px-2 py-1 bg-black/60 backdrop-blur-md rounded border border-j-cyan/20">
+                                <div className="w-1.5 h-1.5 rounded-full bg-j-cyan animate-pulse" />
+                                <span className="text-[9px] font-mono text-j-cyan uppercase tracking-widest">Live Visual Stream</span>
+                            </div>
+                            <button
+                                onClick={() => toggleCamera()}
+                                className="absolute bottom-4 right-4 p-3 bg-j-panel/80 backdrop-blur-md border border-white/10 rounded-full text-j-text-muted hover:text-j-crimson transition-all"
+                            >
+                                <CameraOff size={20} />
+                            </button>
+                        </div>
+                    ) : (
+                        <MobileChatPanel
+                            messages={messages}
+                            status={status}
+                            chatInput={chatInput}
+                            setChatInput={setChatInput}
+                            handleSendChat={handleSendChat}
+                            handleNativeFileSelect={handleNativeFileSelect}
+                            messagesEndRef={messagesEndRef}
+                            thinkingEnabled={thinkingEnabled}
+                            setThinkingEnabled={setThinkingEnabled}
+                            currentOutput={currentOutput}
+                            assistantName={assistantName}
+                        />
+                    )}
                 </div>
             </main>
 
             {/* Bottom Input Bar */}
-            <div className="h-16 border-t border-white/[0.05] flex items-center justify-between px-3 bg-j-panel/80 backdrop-blur-xl">
-                <button
-                    onClick={() => { playClick(); }}
-                    className="p-2 text-j-text-muted hover:text-j-cyan transition-colors"
-                >
-                    <Mic2 size={20} />
-                </button>
+            <div className="h-16 border-t border-white/[0.05] flex items-center justify-between px-3 bg-j-panel/80 backdrop-blur-xl shrink-0">
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => { playClick(); }}
+                        className="p-2 text-j-text-muted hover:text-j-cyan transition-colors"
+                    >
+                        <Mic2 size={20} />
+                    </button>
+                    {/* Camera Button in Bottom Bar for visibility */}
+                    <button
+                        onClick={() => { playClick(); toggleCamera(); }}
+                        disabled={isCameraLoading}
+                        className={`p-2.5 rounded-xl border transition-all ${isCameraOn
+                            ? 'bg-j-cyan/15 border-j-cyan/40 text-j-cyan shadow-[0_0_10px_rgba(0,229,255,0.2)]'
+                            : isCameraLoading
+                                ? 'bg-j-amber/20 border-j-amber/40 text-j-amber animate-pulse'
+                                : 'bg-j-surface/40 border-white/5 text-j-text-muted hover:text-j-cyan'
+                            }`}
+                    >
+                        {isCameraOn ? <Camera size={20} /> : <CameraOff size={20} />}
+                    </button>
+                </div>
 
                 <div className="flex-1 flex items-center mx-3 bg-j-surface/60 rounded-full border border-white/[0.08] px-4 py-2">
                     <span className="text-[10px] font-mono text-j-text-muted/60">⌘</span>
