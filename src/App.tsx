@@ -1,5 +1,19 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { Settings } from 'lucide-react';
+import {
+  Settings,
+  Mic2,
+  MessageSquare,
+  Paperclip,
+  X,
+  Plus,
+  Settings2,
+  History,
+  User,
+  Brain,
+  FileText,
+  ListTodo,
+  RefreshCw
+} from 'lucide-react';
 
 import { useGeminiLive } from './hooks/useGeminiLive';
 import { useZoom } from './hooks/useZoom';
@@ -17,7 +31,7 @@ import SecretKeyModal from './components/modals/SecretKeyModal';
 import SettingsModal from './components/modals/SettingsModal';
 import VoiceSettingsModal from './components/modals/VoiceSettingsModal';
 import AssistantInfoModal from './components/modals/AssistantInfoModal';
-import { Mic2 } from 'lucide-react';
+
 import { AssistantConfig, DEFAULT_ASSISTANT_CONFIG } from './config/assistantConfig';
 
 
@@ -828,7 +842,7 @@ function App() {
 
           {/* Logo Section */}
           <div className="flex items-center gap-4 mr-8">
-            <img src="/logo.jpg" alt="Logo" className="w-12 h-12 object-contain rounded-lg" />
+            <img src="logo.jpg" alt="Logo" className="w-full h-full object-contain rounded-lg" />
             <div className="flex items-center gap-2">
               <span className="text-sm sm:text-lg md:text-xl font-bold tracking-widest text-white neon-glow">{assistantConfig.assistantName.toUpperCase()}</span>
               <span className="hidden xs:inline-block text-[10px] sm:text-lg md:text-xl font-bold tracking-widest text-[#00E5FF] neon-glow ml-2 sm:ml-4 whitespace-nowrap">
@@ -1107,7 +1121,7 @@ function App() {
           >
             <div className={`p-2 rounded-xl transition-all ${mobileTab === 'intelligence' ? 'bg-j-cyan/10 ring-1 ring-j-cyan/30 text-j-cyan scale-125 -mt-6 shadow-[0_0_20px_rgba(0,229,255,0.3)]' : 'text-j-text-muted opacity-60'}`}>
               <div className="w-8 h-8 flex items-center justify-center">
-                <img src="/logo.jpg" alt="Home" className="w-full h-full object-contain rounded-lg" />
+                <img src="logo.jpg" alt="Home" className="w-full h-full object-contain rounded-lg" />
               </div>
             </div>
             <span className="mt-1 font-bold">NOVA</span>
