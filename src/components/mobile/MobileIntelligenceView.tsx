@@ -156,6 +156,23 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
                             <div className={`absolute inset-[-8px] border border-dashed border-j-cyan/20 rounded-full ${isConnected ? 'animate-spin-slow' : ''
                                 }`} />
                         </div>
+
+                        {/* Status Indicator */}
+                        <span className={`mt-3 text-[8px] font-mono tracking-[0.2em] uppercase transition-colors duration-500 ${isConnected ? 'text-j-cyan' : status === ConnectionStatus.CONNECTING ? 'text-j-amber' : 'text-j-text-muted'
+                            }`}>
+                            {isConnected ? 'System Active' : status === ConnectionStatus.CONNECTING ? 'Initializing...' : 'Standby Mode'}
+                        </span>
+
+                        {/* INITIALIZE AI / TERMINATE Button */}
+                        <button
+                            onClick={() => { playClick(); handleStartStop(); }}
+                            className={`mt-3 px-6 py-2 rounded-full border text-[9px] font-mono transition-all uppercase tracking-[0.15em] font-bold shadow-lg ${isConnected
+                                    ? 'border-j-crimson/50 text-j-crimson hover:bg-j-crimson/20 shadow-j-crimson/20'
+                                    : 'border-j-cyan/40 text-j-cyan hover:bg-j-cyan/20 shadow-j-cyan/20'
+                                }`}
+                        >
+                            {isConnected ? 'Terminate' : 'Initialize AI'}
+                        </button>
                     </div>
 
                     {/* Sidebar Controls */}
