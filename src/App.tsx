@@ -49,6 +49,7 @@ import TasksSection from './components/modules/TasksSection';
 import UpdateNotification from './components/modules/UpdateNotification';
 import YouTubePlayer from './components/modules/YouTubePlayer';
 import NavigationModule from './components/modules/NavigationModule';
+import MobileIntelligenceView from './components/mobile/MobileIntelligenceView';
 
 
 import { apiClient } from './utils/api-client';
@@ -831,11 +832,110 @@ function App() {
   }
 
 
+  // PRIORITY 3: Mobile-specific view for screens < 768px
+  if (windowWidth < 768) {
+    return (
+      <div onClick={enableAudio}>
+        <MobileIntelligenceView
+          status={status}
+          isAISpeaking={isAISpeaking}
+          analyser={analyser}
+          micAnalyser={micAnalyser}
+          handleStartStop={handleStartStop}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          setIsMemoryModalOpen={setIsMemoryModalOpen}
+          setIsHistoryModalOpen={setIsHistoryModalOpen}
+          setIsUserModalOpen={setIsUserModalOpen}
+          setIsAssistantInfoModalOpen={setIsAssistantInfoModalOpen}
+          setIsVoiceModalOpen={setIsVoiceModalOpen}
+          setIsSettingsModalOpen={setIsSettingsModalOpen}
+          messages={messages}
+          chatInput={chatInput}
+          setChatInput={setChatInput}
+          handleSendChat={handleSendChat}
+          handleNativeFileSelect={handleNativeFileSelect}
+          attachedFiles={attachedFiles}
+          removeFile={removeFile}
+          messagesEndRef={messagesEndRef}
+          thinkingEnabled={thinkingEnabled}
+          setThinkingEnabled={setThinkingEnabled}
+          currentOutput={currentOutput}
+          isVisualHubExpanded={isVisualHubExpanded}
+          setIsVisualHubExpanded={setIsVisualHubExpanded}
+          generatedImage={generatedImage}
+          generatedDiagram={generatedDiagram}
+          isVisualizing={isVisualizing}
+          assistantName={assistantConfig.assistantName}
+        />
+
+        {/* Modals still need to be available on mobile */}
+        <MemoryModal
+          isOpen={isMemoryModalOpen}
+          onClose={() => setIsMemoryModalOpen(false)}
+          memories={memories}
+          newMemoryInput={newMemoryInput}
+          setNewMemoryInput={setNewMemoryInput}
+          handleAddMemory={handleAddMemory}
+          handleDeleteMemory={handleDeleteMemory}
+          memoryInputRef={memoryInputRef}
+        />
+        <UserProfileModal
+          isOpen={isUserModalOpen}
+          onClose={() => setIsUserModalOpen(false)}
+          userProfile={userProfile}
+          handleUpdateProfile={handleUpdateProfile}
+        />
+        <AssistantInfoModal
+          isOpen={isAssistantInfoModalOpen}
+          onClose={() => setIsAssistantInfoModalOpen(false)}
+          assistantConfig={assistantConfig}
+          handleUpdateAssistantConfig={handleUpdateAssistantConfig}
+        />
+        <HistoryModal
+          isOpen={isHistoryModalOpen}
+          onClose={() => setIsHistoryModalOpen(false)}
+          history={history}
+          historySettings={historySettings}
+          handleUpdateHistorySettings={handleUpdateHistorySettings}
+          handleClearHistory={handleClearHistory}
+        />
+        <SettingsModal
+          isOpen={isSettingsModalOpen}
+          onClose={() => setIsSettingsModalOpen(false)}
+        />
+        <VoiceSettingsModal
+          isOpen={isVoiceModalOpen}
+          onClose={() => setIsVoiceModalOpen(false)}
+          selectedVoice={selectedVoice}
+          onVoiceSelect={handleUpdateVoice}
+          volume={selectedVolume}
+          onVolumeChange={handleUpdateVolume}
+        />
+
+        {activeVideoId && (
+          <YouTubePlayer
+            videoId={activeVideoId}
+            onClose={() => setActiveVideoId(null)}
+          />
+        )}
+        {navigationDestination && (
+          <NavigationModule
+            destination={navigationDestination}
+            onClose={() => setNavigationDestination(null)}
+          />
+        )}
+      </div>
+    );
+  }
+
+
   return (
     <div onClick={enableAudio} className="h-screen w-screen bg-j-void text-j-text-primary font-sans overflow-hidden selection:bg-j-cyan/20 flex flex-col pb-[env(safe-area-inset-bottom)]">
       <div className="absolute inset-0 bg-hex-grid opacity-[0.05] pointer-events-none z-0"></div>
 
       <div className="w-full h-full flex flex-col relative z-10 bg-gradient-to-b from-transparent to-j-void/90">
+
 
         {/* Header */}
         <header className="h-16 border-b border-white/[0.05] flex items-center justify-between px-6 shrink-0 z-10 bg-j-panel/60 backdrop-blur-xl shadow-2xl">
