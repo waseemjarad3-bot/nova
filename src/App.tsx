@@ -866,6 +866,11 @@ function App() {
           generatedImage={generatedImage}
           generatedDiagram={generatedDiagram}
           isVisualizing={isVisualizing}
+          isCameraOn={isCameraOn}
+          isCameraLoading={isCameraLoading}
+          toggleCamera={toggleCamera}
+          videoRef={videoRef}
+          canvasRef={canvasRef}
           assistantName={assistantConfig.assistantName}
         />
 

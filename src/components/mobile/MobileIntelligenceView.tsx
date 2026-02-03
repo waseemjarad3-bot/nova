@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clock, Settings, Mic2 } from 'lucide-react';
+import { Clock, Settings, Mic2, Camera, CameraOff } from 'lucide-react';
 import DotGlobe from '../DotGlobe';
 import { ConnectionStatus } from '../../types';
 import { useAudio } from '../../hooks/useAudio';
@@ -49,6 +49,13 @@ interface MobileIntelligenceViewProps {
     generatedDiagram: string | null;
     isVisualizing: boolean;
 
+    // Camera
+    isCameraOn: boolean;
+    isCameraLoading: boolean;
+    toggleCamera: () => void;
+    videoRef: React.RefObject<HTMLVideoElement | null>;
+    canvasRef: React.RefObject<HTMLCanvasElement | null>;
+
     // Config
     assistantName?: string;
 }
@@ -83,6 +90,11 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
     generatedImage,
     generatedDiagram,
     isVisualizing,
+    isCameraOn,
+    isCameraLoading,
+    toggleCamera,
+    videoRef,
+    canvasRef,
     assistantName = 'M'
 }) => {
     const { playClick } = useAudio();
@@ -152,9 +164,24 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
                                 micAnalyser={micAnalyser}
                                 size={140}
                             />
-                            {/* Decorative ring */}
                             <div className={`absolute inset-[-8px] border border-dashed border-j-cyan/20 rounded-full ${isConnected ? 'animate-spin-slow' : ''
                                 }`} />
+
+                            {/* Camera Preview Overlay */}
+                            {isCameraOn && (
+                                <div className="absolute inset-0 rounded-full overflow-hidden border-2 border-j-cyan shadow-[0_0_20px_rgba(0,229,255,0.4)] z-20 bg-black">
+                                    <video
+                                        ref={videoRef}
+                                        autoPlay
+                                        playsInline
+                                        muted
+                                        className="w-full h-full object-cover scale-x-[-1]"
+                                    />
+                                </div>
+                            )}
+
+                            {/* Hidden canvas for frame capture */}
+                            <canvas ref={canvasRef} className="hidden" width="320" height="240" />
                         </div>
 
                         {/* Status Indicator */}
@@ -163,16 +190,33 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
                             {isConnected ? 'System Active' : status === ConnectionStatus.CONNECTING ? 'Initializing...' : 'Standby Mode'}
                         </span>
 
-                        {/* INITIALIZE AI / TERMINATE Button */}
-                        <button
-                            onClick={() => { playClick(); handleStartStop(); }}
-                            className={`mt-3 px-6 py-2 rounded-full border text-[9px] font-mono transition-all uppercase tracking-[0.15em] font-bold shadow-lg ${isConnected
+                        {/* Button Row: INITIALIZE AI + Camera */}
+                        <div className="flex items-center gap-2 mt-3">
+                            {/* INITIALIZE AI / TERMINATE Button */}
+                            <button
+                                onClick={() => { playClick(); handleStartStop(); }}
+                                className={`px-5 py-2 rounded-full border text-[9px] font-mono transition-all uppercase tracking-[0.15em] font-bold shadow-lg ${isConnected
                                     ? 'border-j-crimson/50 text-j-crimson hover:bg-j-crimson/20 shadow-j-crimson/20'
                                     : 'border-j-cyan/40 text-j-cyan hover:bg-j-cyan/20 shadow-j-cyan/20'
-                                }`}
-                        >
-                            {isConnected ? 'Terminate' : 'Initialize AI'}
-                        </button>
+                                    }`}
+                            >
+                                {isConnected ? 'Terminate' : 'Initialize AI'}
+                            </button>
+
+                            {/* Camera Button */}
+                            <button
+                                onClick={() => { playClick(); toggleCamera(); }}
+                                disabled={isCameraLoading}
+                                className={`p-2.5 rounded-full border transition-all ${isCameraOn
+                                    ? 'bg-j-cyan/20 border-j-cyan/50 text-j-cyan shadow-[0_0_12px_rgba(0,229,255,0.3)]'
+                                    : isCameraLoading
+                                        ? 'bg-j-amber/20 border-j-amber/50 text-j-amber animate-pulse'
+                                        : 'bg-j-surface/60 border-white/10 text-j-text-muted hover:text-j-cyan hover:border-j-cyan/30'
+                                    }`}
+                            >
+                                {isCameraOn ? <Camera size={16} /> : <CameraOff size={16} />}
+                            </button>
+                        </div>
                     </div>
 
                     {/* Sidebar Controls */}
