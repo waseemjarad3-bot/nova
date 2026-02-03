@@ -100,6 +100,12 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
     const { playClick } = useAudio();
     const isConnected = status === ConnectionStatus.CONNECTED;
 
+    // Helper to prevent event bubbling to global enableAudio
+    const wrapHandler = (handler: (e: React.MouseEvent) => void) => (e: React.MouseEvent) => {
+        e.stopPropagation();
+        handler(e);
+    };
+
     return (
         <div className="flex flex-col h-screen w-screen bg-j-void overflow-hidden">
             {/* Header */}
@@ -119,11 +125,14 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
 
                 {/* Right Icons */}
                 <div className="flex items-center gap-2">
-                    <button className="p-2 text-j-text-secondary hover:text-j-cyan transition-colors">
+                    <button
+                        onClick={wrapHandler(() => { })}
+                        className="p-2 text-j-text-secondary hover:text-j-cyan transition-colors"
+                    >
                         <Clock size={18} />
                     </button>
                     <button
-                        onClick={() => { playClick(); setIsSettingsModalOpen(true); }}
+                        onClick={wrapHandler(() => { playClick(); setIsSettingsModalOpen(true); })}
                         className="p-2 text-j-text-secondary hover:text-j-cyan transition-colors"
                     >
                         <Settings size={18} />
@@ -137,7 +146,7 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
                     {['Intelligence', 'Notes', 'Tasks'].map((tab) => (
                         <button
                             key={tab}
-                            onClick={() => { playClick(); setActiveTab(tab.toLowerCase()); }}
+                            onClick={wrapHandler(() => { playClick(); setActiveTab(tab.toLowerCase()); })}
                             className={`px-4 py-1.5 text-[10px] font-medium uppercase tracking-wider transition-all ${activeTab === tab.toLowerCase()
                                 ? 'bg-j-cyan/15 text-j-cyan shadow-[inset_0_0_10px_rgba(0,229,255,0.1)]'
                                 : 'text-j-text-muted hover:text-j-text-secondary'
@@ -176,7 +185,7 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
 
                         {/* INITIALIZE AI / TERMINATE Button */}
                         <button
-                            onClick={() => { playClick(); handleStartStop(); }}
+                            onClick={wrapHandler(() => { playClick(); handleStartStop(); })}
                             className={`mt-4 px-6 py-2 rounded-full border text-[9px] font-mono transition-all uppercase tracking-[0.15em] font-bold shadow-lg ${isConnected
                                 ? 'border-j-crimson/50 text-j-crimson hover:bg-j-crimson/20 shadow-j-crimson/20'
                                 : 'border-j-cyan/40 text-j-cyan hover:bg-j-cyan/20 shadow-j-cyan/20'
@@ -227,7 +236,7 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
                                 <span className="text-[9px] font-mono text-j-cyan uppercase tracking-widest">Live Visual Stream</span>
                             </div>
                             <button
-                                onClick={() => toggleCamera()}
+                                onClick={wrapHandler(() => toggleCamera())}
                                 className="absolute bottom-4 right-4 p-3 bg-j-panel/80 backdrop-blur-md border border-white/10 rounded-full text-j-text-muted hover:text-j-crimson transition-all"
                             >
                                 <CameraOff size={20} />
@@ -255,14 +264,14 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
             <div className="h-16 border-t border-white/[0.05] flex items-center justify-between px-3 bg-j-panel/80 backdrop-blur-xl shrink-0">
                 <div className="flex items-center gap-2">
                     <button
-                        onClick={() => { playClick(); }}
+                        onClick={wrapHandler(() => { playClick(); })}
                         className="p-2 text-j-text-muted hover:text-j-cyan transition-colors"
                     >
                         <Mic2 size={20} />
                     </button>
                     {/* Camera Button in Bottom Bar for visibility */}
                     <button
-                        onClick={() => { playClick(); toggleCamera(); }}
+                        onClick={wrapHandler(() => { playClick(); toggleCamera(); })}
                         disabled={isCameraLoading}
                         className={`p-2.5 rounded-xl border transition-all ${isCameraOn
                             ? 'bg-j-cyan/15 border-j-cyan/40 text-j-cyan shadow-[0_0_10px_rgba(0,229,255,0.2)]'
@@ -273,6 +282,7 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
                     >
                         {isCameraOn ? <Camera size={20} /> : <CameraOff size={20} />}
                     </button>
+                    <div className="hidden lg:block w-px h-6 bg-white/5 ml-2" />
                 </div>
 
                 <div className="flex-1 flex items-center mx-3 bg-j-surface/60 rounded-full border border-white/[0.08] px-4 py-2">
@@ -288,7 +298,7 @@ const MobileIntelligenceView: React.FC<MobileIntelligenceViewProps> = ({
                 </div>
 
                 <button
-                    onClick={() => { playClick(); handleSendChat(); }}
+                    onClick={wrapHandler(() => { playClick(); handleSendChat(); })}
                     disabled={!isConnected}
                     className={`p-3 rounded-full transition-all ${isConnected
                         ? 'bg-j-cyan/20 text-j-cyan border border-j-cyan/30'
